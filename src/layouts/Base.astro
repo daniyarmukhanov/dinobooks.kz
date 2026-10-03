@@ -1,0 +1,90 @@
+---
+import '@fontsource-variable/literata/opsz.css';
+import '@fontsource-variable/golos-text/wght.css';
+import '../styles/global.css';
+import { CONTACT, LANGS, content, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+const site = Astro.site!;
+const canonical = new URL(t.path, site).href;
+const ogImage = new URL(`/og-${lang}.png`, site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BookStore',
+  name: 'Dinobooks',
+  url: new URL('/', site).href,
+  logo: new URL('/logo-512.png', site).href,
+  description: t.meta.description,
+  email: CONTACT.email,
+  telephone: CONTACT.phoneE164,
+  address: { '@type': 'PostalAddress', addressLocality: 'Almaty', addressCountry: 'KZ' },
+  areaServed: 'KZ',
+  sameAs: [CONTACT.instagram],
+};
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={content[l].htmlLang} href={new URL(content[l].path, site).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL('/', site).href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dinobooks" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    {
+      lang === 'en' && (
+        <script is:inline>
+          // "/" is English. Send the visitor to the version that matches their system
+          // language, taking their languages in their own order of preference. A language
+          // picked by hand in the switcher is remembered and wins. No match: stay on English.
+          (function () {
+            var supported = ['en', 'kk', 'ru'];
+            var pick = null;
+            try {
+              var saved = localStorage.getItem('lang');
+              if (supported.indexOf(saved) !== -1) pick = saved;
+            } catch (e) {}
+            if (!pick) {
+              var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+              for (var i = 0; i < prefs.length && !pick; i++) {
+                var code = String(prefs[i]).toLowerCase().split('-')[0];
+                if (supported.indexOf(code) !== -1) pick = code;
+              }
+            }
+            if (pick && pick !== 'en') location.replace('/' + pick + '/' + location.hash);
+          })();
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

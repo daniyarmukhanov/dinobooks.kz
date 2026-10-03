@@ -1,0 +1,13 @@
+---
+// Brand marks from simple-icons, inlined at build time.
+import { siInstagram, siWhatsapp } from 'simple-icons';
+
+interface Props {
+  name: 'whatsapp' | 'instagram';
+}
+
+const icons = { whatsapp: siWhatsapp, instagram: siInstagram };
+const icon = icons[Astro.props.name];
+---
+
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d={icon.path} /></svg>

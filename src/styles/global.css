@@ -1,0 +1,238 @@
+/*
+  Dinobooks design tokens.
+
+  Rules this site holds to:
+  - Ink on white paper, plus one main colour: #219ebc. It fills buttons, the
+    contact band and the "our part" of the order steps, with white text on it.
+    Small coloured text on white uses a darker shade of the same hue. The logo's
+    navy appears only on the shelf; the logo keeps its own colours. No gradients.
+  - Headings are set in Literata, a typeface drawn for reading books on screens
+    (Google Play Books); a bookseller speaking in a book face. Body and UI are in
+    Golos Text, a Cyrillic-first sans with full Kazakh coverage (ә ғ қ ң ө ұ ү һ і).
+    Both were compared against Onest, Commissioner, Rubik, Alegreya Sans and
+    Source Serif with the site's own Kazakh and Russian copy.
+  - Hierarchy from size and space. One small radius. Hairlines, not shadows.
+  - Motion only says what changed: colour shifts, 150ms. Nothing scales or lifts.
+*/
+
+:root {
+  --paper: #ffffff;
+  --paper-2: #eff6f8;
+  --ink: #141a24;
+  --ink-2: #45505e;
+  --ink-3: #6a7483;
+  --rule: #dfe4eb;
+  --rule-strong: #c3ccd8;
+
+  --accent: #219ebc;        /* the main colour */
+  --accent-hover: #1a87a2;  /* pressed / hover: a step darker */
+  --accent-text: #1a7f98;   /* same hue, dark enough for small text on white (4.6:1) */
+  --on-accent: #ffffff;
+  --on-accent-2: #e3f4f9;   /* secondary text on the main colour */
+  --navy: #2f4870;          /* the logo's outline */
+
+  --font-display: 'Literata Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Golos Text Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  /* Type scale, ratio ~1.25 with fluid display sizes */
+  --t-xs: 0.8125rem;
+  --t-sm: 0.9375rem;
+  --t-base: 1.0625rem;
+  --t-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --t-h3: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --t-h2: clamp(1.875rem, 1.35rem + 2vw, 2.875rem);
+  --t-h1: clamp(2.375rem, 1.4rem + 3.9vw, 4.25rem);
+
+  /* Space: a small scale with real jumps */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+
+  --container: 74rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --radius: 6px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  font-feature-settings: 'kern';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--t-h1);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--t-h2);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+h3 {
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--s-section);
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 36em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Buttons: one radius, colour-only state changes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: 600 1rem/1.2 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 150ms var(--ease),
+    border-color 150ms var(--ease),
+    color 150ms var(--ease);
+}
+
+.btn svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.btn-secondary:hover {
+  border-color: var(--ink);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: 600;
+  /* deslop-ignore-next-line 09 -- a real link */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--rule-strong);
+  transition: text-decoration-color 150ms var(--ease);
+}
+
+.link-arrow:hover {
+  text-decoration-color: currentColor;
+}

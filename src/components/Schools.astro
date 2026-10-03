@@ -1,0 +1,186 @@
+---
+import { content, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = content[Astro.props.lang].schools;
+---
+
+<section id="schools" class="section" aria-labelledby="schools-title">
+  <div class="container">
+    <div class="head">
+      <h2 id="schools-title">{t.title}</h2>
+      <p class="lead">{t.lead}</p>
+    </div>
+
+    <h3 id="how" class="steps-title">{t.stepsTitle}</h3>
+    <ol class="steps">
+      {
+        t.steps.map((step, i) => (
+          <li class:list={['step', step.owner]}>
+            <p class="owner">{t.owners[step.owner]}</p>
+            <h4>
+              <span class="num">{i + 1}</span>
+              {step.title}
+            </h4>
+            <p class="text">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="details">
+      <div>
+        <h3>{t.whyTitle}</h3>
+        <dl class="why">
+          {
+            t.why.map((p) => (
+              <div>
+                <dt>{p.title}</dt>
+                <dd>{p.text}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div>
+        <h3>{t.supplyTitle}</h3>
+        <ul class="supply">
+          {t.supply.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-5) var(--s-8);
+    align-items: start;
+  }
+
+  .head .lead {
+    padding-top: 0.4em;
+  }
+
+  .steps-title {
+    margin-top: var(--s-8);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+  }
+
+  .step {
+    padding: var(--s-4) var(--s-4) 0 0;
+    border-top: 4px solid var(--rule-strong);
+  }
+
+  .step.us {
+    border-top-color: var(--accent);
+  }
+
+  .owner {
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+
+  .us .owner {
+    color: var(--accent-text);
+  }
+
+  h4 {
+    margin-top: var(--s-3);
+    font-size: 1.1875rem;
+    line-height: 1.25;
+  }
+
+  .num {
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-right: 0.3em;
+  }
+
+  .text {
+    margin-top: var(--s-2);
+    font-size: var(--t-sm);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-7) var(--s-8);
+    margin-top: var(--s-8);
+  }
+
+  .why,
+  .supply {
+    margin: var(--s-4) 0 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .why > div {
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  dt {
+    font-weight: 600;
+  }
+
+  dd {
+    margin: var(--s-1) 0 0;
+    color: var(--ink-2);
+  }
+
+  .supply li {
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  @media (max-width: 1000px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .step {
+      border-top: 0;
+      border-left: 3px solid var(--rule-strong);
+      padding: 0 0 var(--s-5) var(--s-5);
+    }
+
+    .step.us {
+      border-left-color: var(--accent);
+    }
+
+    .step:last-child {
+      padding-bottom: 0;
+    }
+
+    h4 {
+      margin-top: var(--s-1);
+    }
+
+    .text {
+      max-width: 34em;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .head,
+    .details {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

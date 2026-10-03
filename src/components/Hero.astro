@@ -1,0 +1,89 @@
+---
+import Icon from './Icon.astro';
+import Shelf from './Shelf.astro';
+import { CONTACT, content, mailLink, waLink, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = content[Astro.props.lang];
+---
+
+<section class="hero">
+  <div class="container grid">
+    <div class="text">
+      <h1>{t.hero.title}</h1>
+      <p class="lead">{t.hero.lead}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={waLink(t.wa.school)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          {t.hero.cta}
+        </a>
+        <a class="link-arrow" href="#parents">{t.hero.cta2} <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="or">
+        {t.hero.orEmail} <a href={mailLink(t.emailSubject)}>{CONTACT.email}</a>
+      </p>
+    </div>
+    <Shelf caption={t.hero.shelf} />
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 1.5rem + 5vw, 6.5rem) clamp(3.5rem, 2rem + 5vw, 6rem);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: var(--s-8);
+    align-items: end;
+  }
+
+  h1 {
+    max-width: 12em;
+  }
+
+  .lead {
+    margin-top: var(--s-5);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-4) var(--s-6);
+    margin-top: var(--s-6);
+  }
+
+  .or {
+    margin-top: var(--s-4);
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+
+  .or a {
+    color: var(--ink-2);
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--rule-strong);
+  }
+
+  .or a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-7);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .actions .btn {
+      width: 100%;
+    }
+  }
+</style>

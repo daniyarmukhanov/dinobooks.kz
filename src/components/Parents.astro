@@ -1,0 +1,102 @@
+---
+import Icon from './Icon.astro';
+import { CONTACT, content, waLink, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const all = content[Astro.props.lang];
+const t = all.parents;
+---
+
+<section id="parents" class="parents section" aria-labelledby="parents-title">
+  <div class="container grid">
+    <div>
+      <h2 id="parents-title">{t.title}</h2>
+      <p class="lead">{t.lead}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={waLink(all.wa.parent)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          {t.whatsapp}
+        </a>
+        <a class="btn btn-secondary" href={CONTACT.instagram} target="_blank" rel="noopener">
+          <Icon name="instagram" />
+          {t.instagram}
+        </a>
+      </div>
+      <p class="wholesale">{t.wholesale}</p>
+    </div>
+
+    <div>
+      <h3>{t.listTitle}</h3>
+      <ul class="list">
+        {t.list.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .parents {
+    background: var(--paper-2);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--s-7) var(--s-8);
+    align-items: start;
+  }
+
+  .lead {
+    margin-top: var(--s-5);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .wholesale {
+    margin-top: var(--s-6);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule-strong);
+    color: var(--ink-2);
+    max-width: 32em;
+  }
+
+  h3 {
+    padding-top: 0.5em;
+  }
+
+  .list {
+    margin-top: var(--s-4);
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .list li {
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--rule-strong);
+    font-size: 1.125rem;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    h3 {
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .actions .btn {
+      width: 100%;
+    }
+  }
+</style>

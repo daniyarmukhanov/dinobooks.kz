@@ -1,20 +1,47 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# dinobooks.kz
 
-# Run and deploy your AI Studio app
+Landing page for Dinobooks: English books for international schools and children in Kazakhstan.
 
-This contains everything you need to run your app locally.
+Static site built with [Astro](https://astro.build). No backend, no database, no environment variables.
 
-View your app in AI Studio: https://ai.studio/apps/4fb3ba7f-a1d3-42a6-85c4-1256260a7014
+| URL    | Language |
+| ------ | -------- |
+| `/`    | English  |
+| `/kk/` | Kazakh   |
+| `/ru/` | Russian  |
 
-## Run Locally
+Visitors who open `/` are sent to the version that matches their system language (Kazakh, Russian or English, in the order of their own preferences). If none of their languages match, they stay on English. A language picked by hand in the switcher is remembered in the browser and takes priority.
 
-**Prerequisites:**  Node.js
+## Run locally
 
+Requires Node.js 22.12 or newer.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+npm run dev       # http://localhost:4321
+```
+
+## Build
+
+```bash
+npm run build     # static files → dist/
+npm run preview   # serve dist/ locally to check the build
+```
+
+`dist/` is plain HTML/CSS/images and can be hosted anywhere (nginx, Netlify, Vercel, Cloudflare Pages, GitHub Pages, any shared hosting).
+
+## Where things live
+
+- `src/i18n/content.ts`: all text in all three languages, plus contacts, school names and publishers. Most edits happen here.
+- `src/components/`: page sections (Header, Hero, Shelf, Clients, Schools, Parents, Faq, Contact, Footer).
+- `src/styles/global.css`: design tokens (colours, type scale, spacing) and the reasons behind them.
+- `public/`: favicon, link-preview images (`og-ru.png`, `og-kk.png`, `og-en.png`), robots.txt, sitemap.xml.
+
+## Design rules
+
+The site was built against the [kill-ai-slop](https://github.com/yetone/kill-ai-slop) catalogue: one accent colour (Dinobooks green), no gradients, glass, icon tiles, emoji or invented stats; hierarchy from type size and spacing. To re-check after edits:
+
+```bash
+git clone https://github.com/yetone/kill-ai-slop /tmp/kill-ai-slop
+node /tmp/kill-ai-slop/skill/scripts/scan.mjs src
+```

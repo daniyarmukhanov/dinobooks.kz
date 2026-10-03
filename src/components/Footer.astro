@@ -1,0 +1,77 @@
+---
+import { LANGS, content, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container bar">
+    <p class="sign">
+      <img src="/logo.png" alt="" width="130" height="176" />
+      <span><span class="mark">dinobooks.kz</span> · {t.footer.line} · &copy; {year}</span>
+    </p>
+    <nav aria-label={t.nav.language}>
+      {
+        LANGS.map((l) => (
+          <a href={content[l].path} hreflang={content[l].htmlLang} lang={content[l].htmlLang} data-lang={l} aria-current={l === lang ? 'page' : undefined}>
+            {content[l].langName}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--s-6);
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+  }
+
+  .sign {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .sign img {
+    flex: none;
+    height: 2rem;
+    width: auto;
+  }
+
+  .mark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  nav {
+    display: flex;
+    gap: var(--s-4);
+  }
+
+  nav a {
+    text-decoration: none;
+    transition: color 150ms var(--ease);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--ink);
+  }
+</style>

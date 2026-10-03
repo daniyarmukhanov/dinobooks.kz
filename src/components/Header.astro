@@ -1,0 +1,217 @@
+---
+import Icon from './Icon.astro';
+import { LANGS, content, waLink, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+---
+
+<header class="header">
+  <div class="container bar">
+    <a class="brand" href={t.path} aria-label="Dinobooks">
+      <img src="/logo.png" alt="" width="130" height="176" />
+      <span class="wordmark">dinobooks<span>.kz</span></span>
+    </a>
+
+    <nav class="nav" aria-label="Dinobooks">
+      <a href="#schools">{t.nav.schools}</a>
+      <a href="#parents">{t.nav.parents}</a>
+      <a href="#faq">{t.nav.faq}</a>
+      <a href="#contact">{t.nav.contact}</a>
+    </nav>
+
+    <div class="end">
+      <nav class="langs" aria-label={t.nav.language}>
+        {
+          LANGS.map((l) => (
+            <a
+              href={content[l].path}
+              hreflang={content[l].htmlLang}
+              lang={content[l].htmlLang}
+              data-lang={l}
+              aria-label={content[l].langName}
+              aria-current={l === lang ? 'page' : undefined}
+            >
+              {content[l].langShort}
+            </a>
+          ))
+        }
+      </nav>
+      <a class="btn btn-primary wa" href={waLink(t.wa.general)} target="_blank" rel="noopener" aria-label="WhatsApp">
+        <Icon name="whatsapp" /><span>WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Remember a language picked by hand (header or footer), so "/" stops auto-detecting.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-lang]').forEach((a) => {
+    a.addEventListener('click', () => {
+      try {
+        localStorage.setItem('lang', a.dataset.lang!);
+      } catch {}
+    });
+  });
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+    min-height: 4rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    text-decoration: none;
+  }
+
+  .brand img {
+    display: block;
+    height: 2.75rem;
+    width: auto;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: 1.375rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .wordmark span {
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  .nav {
+    display: flex;
+    gap: var(--s-5);
+    margin-left: var(--s-2);
+  }
+
+  .nav a {
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color 150ms var(--ease);
+  }
+
+  .nav a:hover {
+    color: var(--ink);
+  }
+
+  .end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+    margin-left: auto;
+  }
+
+  .langs {
+    display: flex;
+    gap: var(--s-1);
+  }
+
+  .langs a {
+    padding: var(--s-1) var(--s-2);
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: color 150ms var(--ease);
+  }
+
+  .langs a:hover {
+    color: var(--ink);
+  }
+
+  .langs a[aria-current='page'] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .wa {
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    font-size: var(--t-sm);
+  }
+
+  @media (max-width: 920px) {
+    .nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bar {
+      gap: var(--s-3);
+    }
+
+    .end {
+      gap: var(--s-2);
+    }
+
+    .wordmark span {
+      display: none;
+    }
+
+    .brand img {
+      height: 2.25rem;
+    }
+
+    .wa {
+      width: 2.5rem;
+      padding: 0;
+    }
+
+    .wa span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .bar {
+      gap: var(--s-2);
+    }
+
+    .brand {
+      gap: var(--s-1);
+    }
+
+    .brand img {
+      height: 2rem;
+    }
+
+    .wordmark {
+      font-size: 1.1875rem;
+    }
+
+    .langs {
+      gap: 0;
+    }
+
+    .langs a {
+      padding-inline: 0.3rem;
+    }
+  }
+</style>
